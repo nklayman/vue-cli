@@ -14,6 +14,7 @@ extend type Mutation {
   folderOpen (path: String!): Folder
   folderOpenParent: Folder
   folderSetFavorite (path: String!, favorite: Boolean!): Folder
+  folderCreate(name: String!): Folder
 }
 
 type Folder {
@@ -23,6 +24,7 @@ type Folder {
   isVueProject: Boolean
   favorite: Boolean
   children: [Folder]
+  hidden: Boolean
 }
 `
 
@@ -30,7 +32,8 @@ exports.resolvers = {
   Folder: {
     children: (folder, args, context) => folders.list(folder.path, context),
     isPackage: (folder, args, context) => folders.isPackage(folder.path, context),
-    isVueProject: (folder, args, context) => folders.isVueProject(folder.path, context)
+    isVueProject: (folder, args, context) => folders.isVueProject(folder.path, context),
+    favorite: (folder, args, context) => folders.isFavorite(folder.path, context)
   },
 
   Query: {
@@ -45,6 +48,7 @@ exports.resolvers = {
     folderSetFavorite: (root, args, context) => folders.setFavorite({
       file: args.path,
       favorite: args.favorite
-    }, context)
+    }, context),
+    folderCreate: (root, { name }, context) => folders.create(name, context)
   }
 }

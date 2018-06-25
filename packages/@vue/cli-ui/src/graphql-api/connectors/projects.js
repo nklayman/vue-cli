@@ -7,6 +7,7 @@ const { getFeatures } = require('@vue/cli/lib/util/features')
 const { defaults } = require('@vue/cli/lib/options')
 const { toShortPluginId } = require('@vue/cli-shared-utils')
 const { progress: installProgress } = require('@vue/cli/lib/util/installDeps')
+const { clearModule } = require('@vue/cli/lib/util/module')
 // Connectors
 const progress = require('./progress')
 const cwd = require('./cwd')
@@ -106,8 +107,8 @@ async function initCreator (context) {
   // Presets
   const manualPreset = {
     id: '__manual__',
-    name: 'views.project-create.tabs.presets.manual.name',
-    description: 'views.project-create.tabs.presets.manual.description',
+    name: 'org.vue.views.project-create.tabs.presets.manual.name',
+    description: 'org.vue.views.project-create.tabs.presets.manual.description',
     link: null,
     features: []
   }
@@ -121,7 +122,7 @@ async function initCreator (context) {
         )
         const info = {
           id: key,
-          name: key === 'default' ? 'views.project-create.tabs.presets.default-preset' : key,
+          name: key === 'default' ? 'org.vue.views.project-create.tabs.presets.default-preset' : key,
           features,
           link: null,
           raw: preset
@@ -148,8 +149,8 @@ async function initCreator (context) {
     ),
     {
       id: 'use-config-files',
-      name: 'views.project-create.tabs.features.userConfigFiles.name',
-      description: 'views.project-create.tabs.features.userConfigFiles.description',
+      name: 'org.vue.views.project-create.tabs.features.userConfigFiles.name',
+      description: 'org.vue.views.project-create.tabs.features.userConfigFiles.description',
       link: null,
       plugins: null,
       enabled: false
@@ -178,6 +179,7 @@ function removeCreator (context) {
     installProgress.removeListener('log', onInstallLog)
     creator = null
   }
+  return true
 }
 
 async function getCreation (context) {
@@ -249,6 +251,9 @@ async function create (input, context) {
     cwd.set(targetDir, context)
     creator.context = targetDir
 
+    process.env.VUE_CLI_CONTEXT = targetDir
+    clearModule('@vue/cli-service/webpack.config.js', targetDir)
+
     const inCurrent = input.folder === '.'
     const name = inCurrent ? path.relative('../', process.cwd()) : input.folder
     creator.name = name
@@ -273,16 +278,15 @@ async function create (input, context) {
     await prompts.reset()
     let index
 
-    // Package Manager
-    answers.packageManager = input.packageManager
-
     // Config files
     if ((index = answers.features.indexOf('use-config-files')) !== -1) {
       answers.features.splice(index, 1)
       answers.useConfigFiles = 'files'
     }
 
-    const createOptions = {}
+    const createOptions = {
+      packageManager: input.packageManager
+    }
     // Git
     if (input.enableGit && input.gitCommitMessage) {
       createOptions.git = input.gitCommitMessage
@@ -301,9 +305,9 @@ async function create (input, context) {
       info: 'Resolving preset...'
     })
     let preset
-    if (input.remote) {
+    if (input.preset === '__remote__' && input.remote) {
       // vue create foo --preset bar
-      preset = await creator.resolvePreset(input.preset, input.clone)
+      preset = await creator.resolvePreset(input.remote, input.clone)
     } else if (input.preset === 'default') {
       // vue create foo --default
       preset = defaults.presets.default
@@ -331,6 +335,10 @@ async function create (input, context) {
 }
 
 async function importProject (input, context) {
+  if (!fs.existsSync(path.join(input.path, 'node_modules'))) {
+    throw new Error('NO_MODULES')
+  }
+
   const project = {
     id: shortId.generate(),
     path: input.path,
@@ -426,5 +434,7 @@ module.exports = {
   open,
   remove,
   resetCwd,
-  setFavorite
+  setFavorite,
+  initCreator,
+  removeCreator
 }

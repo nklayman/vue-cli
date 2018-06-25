@@ -2,6 +2,12 @@
 # yarn lockfile v1
 
 
+"@akryum/winattr@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@akryum/winattr/-/winattr-3.0.0.tgz#c345d49f8415583897e345729c12b3503927dd11"
+  dependencies:
+    fswin "^2.17.1227"
+
 "@babel/code-frame@7.0.0-beta.44":
   version "7.0.0-beta.44"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.0.0-beta.44.tgz#2a02643368de80916162be70865c97774f3adbd9"
@@ -1033,14 +1039,14 @@
   dependencies:
     lodash "^4.17.4"
 
-"@vue/ui@^0.3.1":
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/@vue/ui/-/ui-0.3.3.tgz#007a149a670fb08b6c0fe00c908cc43eefd91899"
+"@vue/ui@^0.4.0":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@vue/ui/-/ui-0.4.2.tgz#c538a1062147f60cdf6e30bc7c4f9eeab3a54fee"
   dependencies:
-    focus-visible "^4.1.0"
+    focus-visible "^4.1.4"
     material-design-icons "^3.0.1"
-    v-tooltip "^2.0.0-rc.31"
-    vue-resize "^0.4.3"
+    v-tooltip "^2.0.0-rc.33"
+    vue-resize "^0.4.4"
 
 "@vue/web-component-wrapper@^1.2.0":
   version "1.2.0"
@@ -4995,7 +5001,7 @@ flush-write-stream@^1.0.0:
     inherits "^2.0.1"
     readable-stream "^2.0.4"
 
-focus-visible@^4.1.0:
+focus-visible@^4.1.4:
   version "4.1.4"
   resolved "https://registry.yarnpkg.com/focus-visible/-/focus-visible-4.1.4.tgz#f9963bcf5784b1d9dcde62ba53214d38a4f3f9af"
 
@@ -5171,6 +5177,10 @@ fsevents@^1.0.0, fsevents@^1.1.2, fsevents@^1.2.3:
   dependencies:
     nan "^2.9.2"
     node-pre-gyp "^0.10.0"
+
+fswin@^2.17.1227:
+  version "2.17.1227"
+  resolved "https://registry.yarnpkg.com/fswin/-/fswin-2.17.1227.tgz#c598061e1ac1e7110e2e6ce884296efa27dc2507"
 
 ftp@~0.3.10:
   version "0.3.10"
@@ -7757,6 +7767,10 @@ lodash.create@3.1.1:
     lodash._baseassign "^3.0.0"
     lodash._basecreate "^3.0.0"
     lodash._isiterateecall "^3.0.0"
+
+lodash.debounce@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
 
 lodash.defaultsdeep@4.3.2:
   version "4.3.2"
@@ -11937,9 +11951,9 @@ uuid@^3.0.0, uuid@^3.0.1, uuid@^3.1.0:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.2.1.tgz#12c528bb9d58d0b9265d9a2f6f0fe8be17ff1f14"
 
-v-tooltip@^2.0.0-rc.31:
-  version "2.0.0-rc.32"
-  resolved "https://registry.yarnpkg.com/v-tooltip/-/v-tooltip-2.0.0-rc.32.tgz#85271476c191598ac59361d0660d5da92dc88bf6"
+v-tooltip@^2.0.0-rc.33:
+  version "2.0.0-rc.33"
+  resolved "https://registry.yarnpkg.com/v-tooltip/-/v-tooltip-2.0.0-rc.33.tgz#78f7d8e9c34265622be65ba9dc78c67f1dc02b73"
   dependencies:
     lodash.merge "^4.6.0"
     popper.js "^1.12.9"
@@ -12131,7 +12145,7 @@ vue-property-decorator@^6.0.0:
     reflect-metadata "^0.1.10"
     vue-class-component "^6.1.0"
 
-vue-resize@^0.4.3:
+vue-resize@^0.4.3, vue-resize@^0.4.4:
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/vue-resize/-/vue-resize-0.4.4.tgz#dee9b8dd1b189e7e3f6ec47f86c60694a241bb17"
 
