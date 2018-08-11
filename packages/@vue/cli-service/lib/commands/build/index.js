@@ -32,7 +32,7 @@ module.exports = (api, options) => {
       '--report-json': 'generate report.json to help analyze bundle content',
       '--watch': `watch for changes`
     }
-  }, async (args) => {
+  }, async (args, rawArgs, config) => {
     for (const key in defaults) {
       if (args[key] == null) {
         args[key] = defaults[key]
@@ -50,13 +50,13 @@ module.exports = (api, options) => {
       await build(Object.assign({}, args, {
         modernBuild: false,
         keepAlive: true
-      }), api, options)
+      }), api, options, config)
 
       process.env.VUE_CLI_MODERN_BUILD = true
       await build(Object.assign({}, args, {
         modernBuild: true,
         clean: false
-      }), api, options)
+      }), api, options, config)
 
       delete process.env.VUE_CLI_MODERN_MODE
       delete process.env.VUE_CLI_MODERN_BUILD
@@ -69,13 +69,13 @@ module.exports = (api, options) => {
           `config to specify target browsers.`
         )
       }
-      await build(args, api, options)
+      await build(args, api, options, config)
     }
     delete process.env.VUE_CLI_BUILD_TARGET
   })
 }
 
-async function build (args, api, options) {
+async function build (args, api, options, config) {
   const fs = require('fs-extra')
   const path = require('path')
   const chalk = require('chalk')
@@ -114,14 +114,14 @@ async function build (args, api, options) {
   // resolve raw webpack config
   let webpackConfig
   if (args.target === 'lib') {
-    webpackConfig = require('./resolveLibConfig')(api, args, options)
+    webpackConfig = require('./resolveLibConfig')(api, args, options, config)
   } else if (
     args.target === 'wc' ||
     args.target === 'wc-async'
   ) {
-    webpackConfig = require('./resolveWcConfig')(api, args, options)
+    webpackConfig = require('./resolveWcConfig')(api, args, options, config)
   } else {
-    webpackConfig = require('./resolveAppConfig')(api, args, options)
+    webpackConfig = require('./resolveAppConfig')(api, args, options, config)
   }
 
   // check for common config errors

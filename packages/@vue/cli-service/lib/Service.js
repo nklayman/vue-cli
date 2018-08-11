@@ -178,7 +178,7 @@ module.exports = class Service {
     return plugins
   }
 
-  async run (name, args = {}, rawArgv = []) {
+  async run (name, args = {}, rawArgv = [], options = []) {
     // resolve mode
     // prioritize inline --mode
     // fallback to resolved default modes from plugins or development if --watch is defined
@@ -200,7 +200,7 @@ module.exports = class Service {
       rawArgv.shift()
     }
     const { fn } = command
-    return fn(args, rawArgv)
+    return fn(args, rawArgv, ...options)
   }
 
   resolveChainableWebpackConfig () {

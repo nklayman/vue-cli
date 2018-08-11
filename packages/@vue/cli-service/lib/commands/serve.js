@@ -24,7 +24,7 @@ module.exports = (api, options) => {
       '--https': `use https (default: ${defaults.https})`,
       '--public': `specify the public network URL for the HMR client`
     }
-  }, async function serve (args) {
+  }, async function serve (args, rawArgs, config) {
     info('Starting development server...')
 
     // although this is primarily a dev server, it is possible that we
@@ -43,8 +43,8 @@ module.exports = (api, options) => {
     const launchEditorMiddleware = require('launch-editor-middleware')
     const validateWebpackConfig = require('../util/validateWebpackConfig')
 
-    // resolve webpack config
-    const webpackConfig = api.resolveWebpackConfig()
+    // resolve webpack config or use config arg (can be chainable or not)
+    const webpackConfig = (config ? (config.toConfig ? config.toConfig() : config) : api.resolveWebpackConfig())
 
     // check for common config errors
     validateWebpackConfig(webpackConfig, api, options)
